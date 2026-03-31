@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Portfolio Hub | ApexPlanet</title>
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1d6ed8 0%, #009963 100%);
+            --accent-color: #00bf73;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --bg-light: #f4f7f6;
+            --card-bg: #ffffff;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+        h1, h2, h3 { font-weight: 700; color: #1a252f; }
+
+        /* Navigation */
+        nav { background: var(--card-bg); padding: 1.2rem 2rem; position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .logo { font-size: 1.6rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 1rem; position: relative; }
+        .nav-links a:after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: var(--accent-color); transition: var(--transition); }
+        .nav-links a:hover:after { width: 100%; }
+
+        /* Hero/About Section */
+        #about { background: var(--primary-gradient); color: var(--text-light); text-align: center; height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        #about h1 { font-size: 3.5rem; color: white; margin-bottom: 0.5rem; }
+        #about p { font-size: 1.4rem; opacity: 0.9; max-width: 700px; margin-bottom: 2rem; }
+        .resume-btn { padding: 0.8rem 2.5rem; background: #fff; color: #1d6ed8; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: var(--transition); }
+        .resume-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0,0,0,0.3); }
+
+        /* Main Content Container */
+        .main-content { max-width: 1200px; margin: -50px auto 0 auto; padding: 0 2rem 5rem; position: relative; z-index: 10; }
+
+        section { margin-bottom: 4rem; scroll-margin-top: 100px; }
+        .section-title { font-size: 2.2rem; text-align: center; margin-bottom: 2rem; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary-gradient); margin: 10px auto; border-radius: 2px; }
+
+        /* Product Section */
+        #products .card { padding: 3rem; background: #fff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        .filter-controls { display: flex; gap: 15px; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+        .filter-controls input, .filter-controls select { padding: 12px 20px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; color: #333; width: 300px; transition: var(--transition); }
+        .filter-controls input:focus, .filter-controls select:focus { border-color: #1d6ed8; box-shadow: 0 0 0 3px rgba(29, 110, 216, 0.1); outline: none; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        .product-item { border: 1px solid #eee; padding: 2rem; border-radius: 15px; text-align: center; transition: var(--transition); position: relative; overflow: hidden; }
+        .product-item:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: transparent; }
+        .product-item h3 { font-size: 1.4rem; color: #333; margin-bottom: 0.5rem; }
+        .product-cat { background: var(--primary-gradient); color: #fff; padding: 3px 10px; font-size: 0.75rem; font-weight: 700; border-radius: 20px; position: absolute; top: 15px; right: 15px; text-transform: uppercase; }
+        .product-price { font-size: 1.8rem; font-weight: 800; color: #1d6ed8; margin-top: 1rem; }
+
+        /* To-Do Section */
+        #todo .card { padding: 3rem; background: #fff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        .todo-container { max-width: 600px; margin: 0 auto; }
+        .todo-input-group { display: flex; gap: 10px; margin-bottom: 2rem; }
+        .todo-input-group input { flex-grow: 1; padding: 12px 20px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .todo-input-group button { padding: 12px 25px; background: var(--accent-color); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition); }
+        .todo-input-group button:hover { background: #00e088; transform: translateY(-2px); }
+
+        #todoList { list-style: none; }
+        .todo-item { display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; padding: 1rem 1.5rem; border: 1px solid #eee; margin-bottom: 10px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.02); transition: var(--transition); }
+        .todo-item:hover { border-color: #ddd; transform: translateX(5px); }
+        .todo-item span { color: #555; }
+        .delete-btn { background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: var(--transition); font-weight: 600; }
+        .delete-btn:hover { background: #ff6b81; }
+
+        /* Contact Section */
+        #contact .card { padding: 3rem; background: #fff; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); text-align: center; }
+        #contact p { font-size: 1.1rem; color: #555; margin-bottom: 1rem; }
+        .contact-links { display: flex; gap: 2rem; justify-content: center; margin-top: 2rem; }
+        .contact-links a { color: #555; text-decoration: none; font-weight: 500; font-size: 1.1rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .contact-links a:hover { color: #1d6ed8; }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            nav { flex-direction: column; padding: 1rem; }
+            .nav-links { gap: 1rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+            #about h1 { font-size: 2.5rem; }
+            #products .card { padding: 1.5rem; }
+            .filter-controls input, .filter-controls select { width: 100%; }
+            .todo-input-group { flex-direction: column; }
+            .todo-input-group button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ApexPlanet Student</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#todo">To-Do Hub</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="about">
+        <h1>Hi, I'm pammy kumari</h1>
+        <p>I am a <b>B.Tech Engineering student</b>and a web development intern at apexplanet.I am passionate about building modern wed application and exploring new technologies.</p>
+        <a href="#contact" class="resume-btn">Get In Touch</a>
+    </section>
+
+    <div class="main-content">
+        
+        <section id="products">
+            <h2 class="section-title">Product Showcase</h2>
+            <div class="card">
+                <div class="filter-controls">
+                    <input type="text" id="searchInput" placeholder="Search product name..." onkeyup="filterProducts()">
+                    <select id="categoryFilter" onchange="filterProducts()">
+                        <option value="all">All Categories</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Home & Garden">Home & Garden</option>
+                        <option value="Sports & Outdoor">Sports & Outdoor</option>
+                    </select>
+                </div>
+                <div id="productGrid" class="product-grid">
+                    </div>
+            </div>
+        </section>
+
+        <section id="todo">
+            <h2 class="section-title">Personal Note/Task Manager</h2>
+            <div class="card">
+                <div class="todo-container">
+                    <p style="text-align:center; color:#777; margin-bottom:1.5rem;">Notes are saved in your local browser storage.</p>
+                    <div class="todo-input-group">
+                        <input type="text" id="todoInput" placeholder="Add a quick note or task...">
+                        <button onclick="addTodo()">Add Task</button>
+                    </div>
+                    <ul id="todoList">
+                        </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="card">
+                <p>Have any questions or collaboration opportunities? Feel free to reach out to me.</p>
+                <div class="contact-links">
+                    <a href="mailto:rahul.k@example.com">📧 pammy.kumari@example.com</a>
+                    <a href="https://github.com/rahulk-apexplanet" target="_blank">🐙 GitHub Profile</a>
+                    <a href="#" target="_blank">🔗 LinkedIn</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // --- DATA ---
+        // Mock data for products
+        const productsData = [
+            { name: "Apex Pro Laptop", category: "Electronics", price: 65999 },
+            { name: "Wireless Keyboard Kit", category: "Electronics", price: 2999 },
+            { name: "Smart Work Desk", category: "Home & Garden", price: 15499 },
+            { name: "ApexFit Activity Tracker", category: "Electronics", price: 4499 },
+            { name: "Premium Backpack", category: "Sports & Outdoor", price: 3199 },
+            { name: "Gourmet Coffee Maker", category: "Home & Garden", price: 8999 },
+            { name: "Portable Projector", category: "Electronics", price: 12500 },
+            { name: "Bluetooth Earbuds", category: "Electronics", price: 2199 }
+        ];
+
+        // --- PRODUCT LISTING LOGIC ---
+        function displayProducts(productsList) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = ''; // Clear previous items
+
+            if (productsList.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #777;">No products match your criteria.</p>';
+                return;
+            }
+
+            productsList.forEach(product => {
+                const itemHtml = `
+                    <div class="product-item">
+                        <span class="product-cat">${product.category}</span>
+                        <h3>${product.name}</h3>
+                        <div class="product-price">₹${product.price.toLocaleString('en-IN')}</div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', itemHtml);
+            });
+        }
+
+        function filterProducts() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const categoryVal = document.getElementById('categoryFilter').value;
+            
+            const filteredProducts = productsData.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchVal);
+                const matchesCategory = categoryVal === 'all' || p.category === categoryVal;
+                return matchesSearch && matchesCategory;
+            });
+            displayProducts(filteredProducts);
+        }
+
+        // --- TO-DO LIST LOGIC (WITH LOCAL STORAGE) ---
+        let todos = JSON.parse(localStorage.getItem('apexTodos')) || [];
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            if (input.value.trim()) {
+                todos.push(input.value.trim());
+                input.value = '';
+                saveAndRenderTodo();
+            } else {
+                alert("Please enter a valid task.");
+            }
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            saveAndRenderTodo();
+        }
+
+        function saveAndRenderTodo() {
+            localStorage.setItem('apexTodos', JSON.stringify(todos));
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+
+            todos.forEach((todo, index) => {
+                const todoHtml = `
+                    <li class="todo-item">
+                        <span>${todo}</span>
+                        <button onclick="deleteTodo(${index})" class="delete-btn">Remove</button>
+                    </li>
+                `;
+                list.insertAdjacentHTML('beforeend', todoHtml);
+            });
+        }
+
+        // Initial Page Load
+        displayProducts(productsData);
+        saveAndRenderTodo();
+    </script>
+</body>
+</html
